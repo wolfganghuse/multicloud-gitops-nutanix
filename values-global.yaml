@@ -1,6 +1,6 @@
 ---
 global:
-  pattern: multicloud-gitops
+  pattern: multicloud-gitops-nutanix
 
   options:
     useCSV: false
