@@ -3,13 +3,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: vm-operator-controller-manager
-  namespace: {{ .Release.Namespace }}
+  namespace: vm-operator-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: vm-operator-leader-election-role
-  namespace: {{ .Release.Namespace }}
+  namespace: vm-operator-system
 rules:
 - apiGroups:
   - ""
@@ -256,7 +256,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: vm-operator-leader-election-rolebinding
-  namespace: {{ .Release.Namespace }}
+  namespace: vm-operator-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -264,7 +264,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: vm-operator-controller-manager
-  namespace: {{ .Release.Namespace }}
+  namespace: vm-operator-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -277,7 +277,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: vm-operator-controller-manager
-  namespace: {{ .Release.Namespace }}
+  namespace: vm-operator-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -290,7 +290,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: vm-operator-controller-manager
-  namespace: {{ .Release.Namespace }}
+  namespace: vm-operator-system
 ---
 apiVersion: v1
 data:
@@ -319,7 +319,7 @@ data:
 kind: ConfigMap
 metadata:
   name: vm-operator-manager-config
-  namespace: {{ .Release.Namespace }}
+  namespace: vm-operator-system
 ---
 apiVersion: v1
 kind: Service
@@ -327,7 +327,7 @@ metadata:
   labels:
     control-plane: controller-manager
   name: vm-operator-controller-manager-metrics-service
-  namespace: {{ .Release.Namespace }}
+  namespace: vm-operator-system
 spec:
   ports:
   - name: https
@@ -341,7 +341,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: vm-operator-webhook-service
-  namespace: {{ .Release.Namespace }}
+  namespace: vm-operator-system
 spec:
   ports:
   - port: 443
@@ -357,7 +357,7 @@ metadata:
     app: vm-operator
     control-plane: controller-manager
   name: vm-operator-controller-manager
-  namespace: {{ .Release.Namespace }}
+  namespace: vm-operator-system
 spec:
   replicas: 1
   selector:
@@ -463,11 +463,11 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: vm-operator-serving-cert
-  namespace: {{ .Release.Namespace }}
+  namespace: vm-operator-system
 spec:
   dnsNames:
-  - vm-operator-webhook-service.{{ .Release.Namespace }}.svc
-  - vm-operator-webhook-service.{{ .Release.Namespace }}.svc.cluster.local
+  - vm-operator-webhook-service.vm-operator-system.svc
+  - vm-operator-webhook-service.vm-operator-system.svc.cluster.local
   issuerRef:
     kind: Issuer
     name: vm-operator-selfsigned-issuer
@@ -477,7 +477,7 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: vm-operator-selfsigned-issuer
-  namespace: {{ .Release.Namespace }}
+  namespace: vm-operator-system
 spec:
   selfSigned: {}
 ---
@@ -485,7 +485,7 @@ apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
   annotations:
-    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/vm-operator-serving-cert
+    cert-manager.io/inject-ca-from: vm-operator-system/vm-operator-serving-cert
   name: vm-operator-mutating-webhook-configuration
 webhooks:
 - admissionReviewVersions:
@@ -493,7 +493,7 @@ webhooks:
   clientConfig:
     service:
       name: vm-operator-webhook-service
-      namespace: {{ .Release.Namespace }}
+      namespace: vm-operator-system
       path: /mutate-vm-nutanix-com-v1alpha1-nutanixvirtualmachine
   failurePolicy: Fail
   name: mnutanixvirtualmachine.kb.io
@@ -513,7 +513,7 @@ apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
   annotations:
-    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/vm-operator-serving-cert
+    cert-manager.io/inject-ca-from: vm-operator-system/vm-operator-serving-cert
   name: vm-operator-validating-webhook-configuration
 webhooks:
 - admissionReviewVersions:
@@ -521,7 +521,7 @@ webhooks:
   clientConfig:
     service:
       name: vm-operator-webhook-service
-      namespace: {{ .Release.Namespace }}
+      namespace: vm-operator-system
       path: /validate-vm-nutanix-com-v1alpha1-nutanixvirtualmachine
   failurePolicy: Fail
   name: vnutanixvirtualmachine.kb.io
