@@ -4,6 +4,7 @@ clusterGroup:
 
   namespaces:
     - open-cluster-management
+    - cert-manager-operator
     - vault
     - golang-external-secrets
     - config-demo
