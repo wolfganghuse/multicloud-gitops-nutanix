@@ -15,6 +15,10 @@ clusterGroup:
       namespace: open-cluster-management
       channel: release-2.7
       #csv: advanced-cluster-management.v2.6.1
+    cert-manager:
+      name: cert-manager
+      namespace: cert-manager-operator
+      channel: stable-1.11
 
   projects:
     - hub
