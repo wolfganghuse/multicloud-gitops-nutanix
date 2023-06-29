@@ -54,7 +54,7 @@ clusterGroup:
     vm-operator:
       name: vm-operator
       namespace: vm-operator-system
-      project: vm-operator-system
+      project: hub
       path: charts/all/vm-operator
 
     config-demo:
