@@ -3,7 +3,7 @@ secretStore:
   kind: ClusterSecretStore
 
 credentialsecret:
-  key: secret/data/nutanix/prismcentral
+  key: secret/data/hub/prismcentral
   
 vmoperator:
   pc:
