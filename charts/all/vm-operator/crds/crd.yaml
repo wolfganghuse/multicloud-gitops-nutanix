@@ -1,0 +1,1143 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.9.2
+  creationTimestamp: null
+  name: nutaniximages.vm.nutanix.com
+spec:
+  group: vm.nutanix.com
+  names:
+    kind: NutanixImage
+    listKind: NutanixImageList
+    plural: nutaniximages
+    shortNames:
+    - image
+    - images
+    singular: nutaniximage
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.state
+      name: State
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: NutanixImage is the Schema for the nutaniximages API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: NutanixImageSpec defines the desired state of NutanixImage
+            properties:
+              description:
+                type: string
+              insecure:
+                default: false
+                type: boolean
+              type:
+                enum:
+                - iso
+                - disk
+                type: string
+              url:
+                type: string
+            type: object
+          status:
+            description: NutanixImageStatus defines the observed state of NutanixImage
+            properties:
+              failureMessage:
+                description: Failure message for the resource
+                type: string
+              imageUUID:
+                type: string
+              lastTaskUUID:
+                type: string
+              state:
+                description: state of the resource
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.9.2
+  creationTimestamp: null
+  name: nutanixvirtualmachineimports.vm.nutanix.com
+spec:
+  group: vm.nutanix.com
+  names:
+    kind: NutanixVirtualMachineImport
+    listKind: NutanixVirtualMachineImportList
+    plural: nutanixvirtualmachineimports
+    shortNames:
+    - vmimport
+    - vmimports
+    singular: nutanixvirtualmachineimport
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.state
+      name: State
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: NutanixVirtualMachineImport is the Schema for the nutanixvirtualmachineimports
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: NutanixVirtualMachineImportSpec defines the desired state
+              of NutanixVirtualMachineImport
+            properties:
+              vmUUID:
+                description: The Nutanix VM's UUID
+                type: string
+            type: object
+          status:
+            description: NutanixVirtualMachineImportStatus defines the observed state
+              of NutanixVirtualMachineImport
+            properties:
+              failureMessage:
+                description: Failure message for VM
+                type: string
+              state:
+                description: state of the resource
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cert-manager.io/inject-ca-from: $(CERTIFICATE_NAMESPACE)/$(CERTIFICATE_NAME)
+    controller-gen.kubebuilder.io/version: v0.9.2
+  name: nutanixvirtualmachines.vm.nutanix.com
+spec:
+  conversion:
+    strategy: Webhook
+    webhook:
+      clientConfig:
+        service:
+          name: webhook-service
+          namespace: system
+          path: /convert
+      conversionReviewVersions:
+      - v1
+  group: vm.nutanix.com
+  names:
+    kind: NutanixVirtualMachine
+    listKind: NutanixVirtualMachineList
+    plural: nutanixvirtualmachines
+    shortNames:
+    - vm
+    - vms
+    singular: nutanixvirtualmachine
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.state
+      name: State
+      type: string
+    - jsonPath: .status.addresses
+      name: Addresses
+      type: string
+    - jsonPath: .spec.vcpusPerSocket
+      name: vCPU Per Socket
+      priority: 1
+      type: integer
+    - jsonPath: .spec.vcpuSockets
+      name: vCPU Sockets
+      priority: 1
+      type: integer
+    - jsonPath: .spec.memorySize
+      name: Memory
+      priority: 1
+      type: string
+    - jsonPath: .spec.powerState
+      name: PowerState
+      priority: 1
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: NutanixVirtualMachine is the Schema for the nutanixvirtualmachines
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: NutanixVirtualMachineSpec defines the desired state of NutanixVirtualMachine
+            properties:
+              bootConfig:
+                properties:
+                  bootOrder:
+                    description: BootOrder
+                    items:
+                      type: string
+                    type: array
+                  bootType:
+                    description: Defines the boot type of the virtual machine. Only
+                      supports UEFI and Legacy
+                    enum:
+                    - legacy
+                    - uefi
+                    type: string
+                  secureBoot:
+                    default: false
+                    description: SecureBoot is only applicable for UEFI
+                    type: boolean
+                type: object
+              categories:
+                description: List of categories that need to be added to the machines.
+                  Categories must already exist in Prism Central
+                items:
+                  properties:
+                    key:
+                      description: key is the Key of category in PC.
+                      minLength: 1
+                      type: string
+                    value:
+                      description: value is the category value linked to the category
+                        key in PC
+                      minLength: 1
+                      type: string
+                  type: object
+                type: array
+              cdroms:
+                items:
+                  properties:
+                    Index:
+                      type: integer
+                    busType:
+                      default: ide
+                      enum:
+                      - ide
+                      - sata
+                      type: string
+                    image:
+                      description: NutanixResourceIdentifier holds the identity of
+                        a Nutanix PC resource (cluster, image, subnet, etc.)
+                      properties:
+                        name:
+                          description: name is the resource name in the PC
+                          type: string
+                        type:
+                          description: Type is the identifier type to use for this
+                            resource.
+                          enum:
+                          - uuid
+                          - name
+                          type: string
+                        uuid:
+                          description: uuid is the UUID of the resource in the PC.
+                          type: string
+                      required:
+                      - type
+                      type: object
+                  required:
+                  - Index
+                  - busType
+                  type: object
+                type: array
+              cluster:
+                description: cluster is to identify the cluster (the Prism Element
+                  under management of the Prism Central), in which the Machine's VM
+                  will be created. The cluster identifier (uuid or name) can be obtained
+                  from the Prism Central console or using the prism_central API.
+                properties:
+                  name:
+                    description: name is the resource name in the PC
+                    type: string
+                  type:
+                    description: Type is the identifier type to use for this resource.
+                    enum:
+                    - uuid
+                    - name
+                    type: string
+                  uuid:
+                    description: uuid is the UUID of the resource in the PC.
+                    type: string
+                required:
+                - type
+                type: object
+              customization:
+                description: customization holds the cloud-init or sysprep scripts.
+                  Can be stored in configmap or secret
+                properties:
+                  customizationRef:
+                    description: 'ObjectReference contains enough information to let
+                      you inspect or modify the referred object. --- New uses of this
+                      type are discouraged because of difficulty describing its usage
+                      when embedded in APIs. 1. Ignored fields.  It includes many
+                      fields which are not generally honored.  For instance, ResourceVersion
+                      and FieldPath are both very rarely valid in actual usage. 2.
+                      Invalid usage help.  It is impossible to add specific help for
+                      individual usage.  In most embedded usages, there are particular
+                      restrictions like, "must refer only to types A and B" or "UID
+                      not honored" or "name must be restricted". Those cannot be well
+                      described when embedded. 3. Inconsistent validation.  Because
+                      the usages are different, the validation rules are different
+                      by usage, which makes it hard for users to predict what will
+                      happen. 4. The fields are both imprecise and overly precise.  Kind
+                      is not a precise mapping to a URL. This can produce ambiguity
+                      during interpretation and require a REST mapping.  In most cases,
+                      the dependency is on the group,resource tuple and the version
+                      of the actual struct is irrelevant. 5. We cannot easily change
+                      it.  Because this type is embedded in many locations, updates
+                      to this type will affect numerous schemas.  Don''t make new
+                      APIs embed an underspecified API type they do not control. Instead
+                      of using this type, create a locally provided and used type
+                      that is well-focused on your reference. For example, ServiceReferences
+                      for admission registration: https://github.com/kubernetes/api/blob/release-1.17/admissionregistration/v1/types.go#L533
+                      .'
+                    properties:
+                      apiVersion:
+                        description: API version of the referent.
+                        type: string
+                      fieldPath:
+                        description: 'If referring to a piece of an object instead
+                          of an entire object, this string should contain a valid
+                          JSON/Go field access statement, such as desiredState.manifest.containers[2].
+                          For example, if the object reference is to a container within
+                          a pod, this would take on a value like: "spec.containers{name}"
+                          (where "name" refers to the name of the container that triggered
+                          the event) or if no container name is specified "spec.containers[2]"
+                          (container with index 2 in this pod). This syntax is chosen
+                          only to have some well-defined way of referencing a part
+                          of an object. TODO: this design is not final and this field
+                          is subject to change in the future.'
+                        type: string
+                      kind:
+                        description: 'Kind of the referent. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+                        type: string
+                      name:
+                        description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                        type: string
+                      namespace:
+                        description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                        type: string
+                      resourceVersion:
+                        description: 'Specific resourceVersion to which this reference
+                          is made, if any. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#concurrency-control-and-consistency'
+                        type: string
+                      uid:
+                        description: 'UID of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#uids'
+                        type: string
+                    type: object
+                    x-kubernetes-map-type: atomic
+                  type:
+                    enum:
+                    - cloud-init
+                    type: string
+                type: object
+              description:
+                type: string
+              disks:
+                items:
+                  properties:
+                    busType:
+                      default: scsi
+                      description: Bustype for the disk
+                      enum:
+                      - scsi
+                      - sata
+                      type: string
+                    diskIndex:
+                      description: Index of the disk
+                      minimum: 0
+                      type: integer
+                    diskSize:
+                      anyOf:
+                      - type: integer
+                      - type: string
+                      description: Disk size
+                      pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                      x-kubernetes-int-or-string: true
+                    image:
+                      description: NutanixResourceIdentifier holds the identity of
+                        a Nutanix PC resource (cluster, image, subnet, etc.)
+                      properties:
+                        name:
+                          description: name is the resource name in the PC
+                          type: string
+                        type:
+                          description: Type is the identifier type to use for this
+                            resource.
+                          enum:
+                          - uuid
+                          - name
+                          type: string
+                        uuid:
+                          description: uuid is the UUID of the resource in the PC.
+                          type: string
+                      required:
+                      - type
+                      type: object
+                    storageContainer:
+                      description: NutanixResourceIdentifier holds the identity of
+                        a Nutanix PC resource (cluster, image, subnet, etc.)
+                      properties:
+                        name:
+                          description: name is the resource name in the PC
+                          type: string
+                        type:
+                          description: Type is the identifier type to use for this
+                            resource.
+                          enum:
+                          - uuid
+                          - name
+                          type: string
+                        uuid:
+                          description: uuid is the UUID of the resource in the PC.
+                          type: string
+                      required:
+                      - type
+                      type: object
+                  required:
+                  - busType
+                  - diskIndex
+                  - diskSize
+                  type: object
+                type: array
+              memorySize:
+                anyOf:
+                - type: integer
+                - type: string
+                description: memorySize is the memory size (in Quantity format) of
+                  the VM The minimum memorySize is 2Gi bytes
+                pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                x-kubernetes-int-or-string: true
+              nics:
+                description: subnet is to identify the cluster's network subnet to
+                  use for the Machine's VM The cluster identifier (uuid or name) can
+                  be obtained from the Prism Central console or using the prism_central
+                  API. Subnets []NutanixResourceIdentifier `json:"subnet"`
+                items:
+                  properties:
+                    ipv4Address:
+                      type: string
+                    subnet:
+                      description: NutanixResourceIdentifier holds the identity of
+                        a Nutanix PC resource (cluster, image, subnet, etc.)
+                      properties:
+                        name:
+                          description: name is the resource name in the PC
+                          type: string
+                        type:
+                          description: Type is the identifier type to use for this
+                            resource.
+                          enum:
+                          - uuid
+                          - name
+                          type: string
+                        uuid:
+                          description: uuid is the UUID of the resource in the PC.
+                          type: string
+                      required:
+                      - type
+                      type: object
+                  required:
+                  - subnet
+                  type: object
+                minItems: 1
+                type: array
+              powerState:
+                default: "on"
+                enum:
+                - "on"
+                - "off"
+                type: string
+              project:
+                description: Add the machine resources to a Prism Central project
+                properties:
+                  name:
+                    description: name is the resource name in the PC
+                    type: string
+                  type:
+                    description: Type is the identifier type to use for this resource.
+                    enum:
+                    - uuid
+                    - name
+                    type: string
+                  uuid:
+                    description: uuid is the UUID of the resource in the PC.
+                    type: string
+                required:
+                - type
+                type: object
+              providerID:
+                type: string
+              serialPorts:
+                items:
+                  properties:
+                    connected:
+                      default: true
+                      type: boolean
+                    index:
+                      minimum: 0
+                      type: integer
+                  required:
+                  - connected
+                  - index
+                  type: object
+                type: array
+              vcpuSockets:
+                description: vcpuSockets is the number of vCPU sockets of the VM
+                minimum: 1
+                type: integer
+              vcpusPerSocket:
+                description: vcpusPerSocket is the number of vCPUs per socket of the
+                  VM
+                minimum: 1
+                type: integer
+            required:
+            - cluster
+            - memorySize
+            - vcpuSockets
+            - vcpusPerSocket
+            type: object
+          status:
+            description: NutanixVirtualMachineStatus defines the observed state of
+              NutanixVirtualMachine
+            properties:
+              addresses:
+                description: Addresses contains the Nutanix VM associated addresses.
+                  Address type is one of Hostname, ExternalIP, InternalIP, ExternalDNS,
+                  InternalDNS
+                items:
+                  type: string
+                type: array
+              failureMessage:
+                description: Failure message for VM
+                type: string
+              lastTaskUUID:
+                type: string
+              state:
+                description: state of the VM
+                type: string
+              vmUUID:
+                description: The Nutanix VM's UUID
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources: {}
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.9.2
+  creationTimestamp: null
+  name: nutanixvirtualmachineservices.vm.nutanix.com
+spec:
+  group: vm.nutanix.com
+  names:
+    kind: NutanixVirtualMachineService
+    listKind: NutanixVirtualMachineServiceList
+    plural: nutanixvirtualmachineservices
+    shortNames:
+    - vmservice
+    - vmsvc
+    - vmservices
+    - vmsvcs
+    singular: nutanixvirtualmachineservice
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.state
+      name: State
+      type: string
+    - jsonPath: .spec.type
+      name: Type
+      type: string
+    - jsonPath: .status.clusterIP
+      name: Cluster-IP
+      type: string
+    - jsonPath: .status.externalIPs
+      name: External-IPs
+      type: string
+    - jsonPath: .status.ports
+      name: Ports
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: NutanixVirtualMachineService is the Schema for the nutanixvirtualmachineservices
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: NutanixVirtualMachineServiceSpec defines the desired state
+              of NutanixVirtualMachineService
+            properties:
+              ports:
+                items:
+                  properties:
+                    checkConnection:
+                      default: false
+                      type: boolean
+                    name:
+                      type: string
+                    nodePort:
+                      format: int32
+                      maximum: 65535
+                      minimum: 30000
+                      type: integer
+                    port:
+                      format: int32
+                      maximum: 65535
+                      minimum: 1
+                      type: integer
+                    protocol:
+                      enum:
+                      - TCP
+                      - UDP
+                      type: string
+                    targetPort:
+                      format: int32
+                      maximum: 65535
+                      minimum: 1
+                      type: integer
+                  type: object
+                type: array
+              selector:
+                additionalProperties:
+                  type: string
+                type: object
+              type:
+                default: ClusterIP
+                enum:
+                - NodePort
+                - ClusterIP
+                - LoadBalancer
+                type: string
+            type: object
+          status:
+            description: NutanixVirtualMachineServiceStatus defines the observed state
+              of NutanixVirtualMachineService
+            properties:
+              clusterIP:
+                type: string
+              externalIPs:
+                items:
+                  type: string
+                type: array
+              failureMessage:
+                type: string
+              ports:
+                items:
+                  type: string
+                type: array
+              state:
+                description: state of the resource
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.9.2
+  creationTimestamp: null
+  name: nutanixvirtualmachinesets.vm.nutanix.com
+spec:
+  group: vm.nutanix.com
+  names:
+    kind: NutanixVirtualMachineSet
+    listKind: NutanixVirtualMachineSetList
+    plural: nutanixvirtualmachinesets
+    shortNames:
+    - vmset
+    - vmsets
+    singular: nutanixvirtualmachineset
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .spec.replicas
+      name: Expected
+      type: integer
+    - jsonPath: .status.readyReplicas
+      name: Ready
+      type: integer
+    - jsonPath: .status.activeReplicas
+      name: Active
+      type: integer
+    - jsonPath: .status.deletingReplicas
+      name: Deleting
+      type: integer
+    - jsonPath: .status.state
+      name: State
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: NutanixVirtualMachineSet is the Schema for the nutanixvirtualmachinesets
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: NutanixVirtualMachineSetSpec defines the desired state of
+              NutanixVirtualMachineSet
+            properties:
+              replicas:
+                default: 1
+                type: integer
+              virtualMachineSpec:
+                description: NutanixVirtualMachineSpec defines the desired state of
+                  NutanixVirtualMachine
+                properties:
+                  bootConfig:
+                    properties:
+                      bootOrder:
+                        description: BootOrder
+                        items:
+                          type: string
+                        type: array
+                      bootType:
+                        description: Defines the boot type of the virtual machine.
+                          Only supports UEFI and Legacy
+                        enum:
+                        - legacy
+                        - uefi
+                        type: string
+                      secureBoot:
+                        default: false
+                        description: SecureBoot is only applicable for UEFI
+                        type: boolean
+                    type: object
+                  categories:
+                    description: List of categories that need to be added to the machines.
+                      Categories must already exist in Prism Central
+                    items:
+                      properties:
+                        key:
+                          description: key is the Key of category in PC.
+                          minLength: 1
+                          type: string
+                        value:
+                          description: value is the category value linked to the category
+                            key in PC
+                          minLength: 1
+                          type: string
+                      type: object
+                    type: array
+                  cdroms:
+                    items:
+                      properties:
+                        Index:
+                          type: integer
+                        busType:
+                          default: ide
+                          enum:
+                          - ide
+                          - sata
+                          type: string
+                        image:
+                          description: NutanixResourceIdentifier holds the identity
+                            of a Nutanix PC resource (cluster, image, subnet, etc.)
+                          properties:
+                            name:
+                              description: name is the resource name in the PC
+                              type: string
+                            type:
+                              description: Type is the identifier type to use for
+                                this resource.
+                              enum:
+                              - uuid
+                              - name
+                              type: string
+                            uuid:
+                              description: uuid is the UUID of the resource in the
+                                PC.
+                              type: string
+                          required:
+                          - type
+                          type: object
+                      required:
+                      - Index
+                      - busType
+                      type: object
+                    type: array
+                  cluster:
+                    description: cluster is to identify the cluster (the Prism Element
+                      under management of the Prism Central), in which the Machine's
+                      VM will be created. The cluster identifier (uuid or name) can
+                      be obtained from the Prism Central console or using the prism_central
+                      API.
+                    properties:
+                      name:
+                        description: name is the resource name in the PC
+                        type: string
+                      type:
+                        description: Type is the identifier type to use for this resource.
+                        enum:
+                        - uuid
+                        - name
+                        type: string
+                      uuid:
+                        description: uuid is the UUID of the resource in the PC.
+                        type: string
+                    required:
+                    - type
+                    type: object
+                  customization:
+                    description: customization holds the cloud-init or sysprep scripts.
+                      Can be stored in configmap or secret
+                    properties:
+                      customizationRef:
+                        description: 'ObjectReference contains enough information
+                          to let you inspect or modify the referred object. --- New
+                          uses of this type are discouraged because of difficulty
+                          describing its usage when embedded in APIs. 1. Ignored fields.  It
+                          includes many fields which are not generally honored.  For
+                          instance, ResourceVersion and FieldPath are both very rarely
+                          valid in actual usage. 2. Invalid usage help.  It is impossible
+                          to add specific help for individual usage.  In most embedded
+                          usages, there are particular restrictions like, "must refer
+                          only to types A and B" or "UID not honored" or "name must
+                          be restricted". Those cannot be well described when embedded.
+                          3. Inconsistent validation.  Because the usages are different,
+                          the validation rules are different by usage, which makes
+                          it hard for users to predict what will happen. 4. The fields
+                          are both imprecise and overly precise.  Kind is not a precise
+                          mapping to a URL. This can produce ambiguity during interpretation
+                          and require a REST mapping.  In most cases, the dependency
+                          is on the group,resource tuple and the version of the actual
+                          struct is irrelevant. 5. We cannot easily change it.  Because
+                          this type is embedded in many locations, updates to this
+                          type will affect numerous schemas.  Don''t make new APIs
+                          embed an underspecified API type they do not control. Instead
+                          of using this type, create a locally provided and used type
+                          that is well-focused on your reference. For example, ServiceReferences
+                          for admission registration: https://github.com/kubernetes/api/blob/release-1.17/admissionregistration/v1/types.go#L533
+                          .'
+                        properties:
+                          apiVersion:
+                            description: API version of the referent.
+                            type: string
+                          fieldPath:
+                            description: 'If referring to a piece of an object instead
+                              of an entire object, this string should contain a valid
+                              JSON/Go field access statement, such as desiredState.manifest.containers[2].
+                              For example, if the object reference is to a container
+                              within a pod, this would take on a value like: "spec.containers{name}"
+                              (where "name" refers to the name of the container that
+                              triggered the event) or if no container name is specified
+                              "spec.containers[2]" (container with index 2 in this
+                              pod). This syntax is chosen only to have some well-defined
+                              way of referencing a part of an object. TODO: this design
+                              is not final and this field is subject to change in
+                              the future.'
+                            type: string
+                          kind:
+                            description: 'Kind of the referent. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+                            type: string
+                          name:
+                            description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                            type: string
+                          namespace:
+                            description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                            type: string
+                          resourceVersion:
+                            description: 'Specific resourceVersion to which this reference
+                              is made, if any. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#concurrency-control-and-consistency'
+                            type: string
+                          uid:
+                            description: 'UID of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#uids'
+                            type: string
+                        type: object
+                        x-kubernetes-map-type: atomic
+                      type:
+                        enum:
+                        - cloud-init
+                        type: string
+                    type: object
+                  description:
+                    type: string
+                  disks:
+                    items:
+                      properties:
+                        busType:
+                          default: scsi
+                          description: Bustype for the disk
+                          enum:
+                          - scsi
+                          - sata
+                          type: string
+                        diskIndex:
+                          description: Index of the disk
+                          minimum: 0
+                          type: integer
+                        diskSize:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          description: Disk size
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        image:
+                          description: NutanixResourceIdentifier holds the identity
+                            of a Nutanix PC resource (cluster, image, subnet, etc.)
+                          properties:
+                            name:
+                              description: name is the resource name in the PC
+                              type: string
+                            type:
+                              description: Type is the identifier type to use for
+                                this resource.
+                              enum:
+                              - uuid
+                              - name
+                              type: string
+                            uuid:
+                              description: uuid is the UUID of the resource in the
+                                PC.
+                              type: string
+                          required:
+                          - type
+                          type: object
+                        storageContainer:
+                          description: NutanixResourceIdentifier holds the identity
+                            of a Nutanix PC resource (cluster, image, subnet, etc.)
+                          properties:
+                            name:
+                              description: name is the resource name in the PC
+                              type: string
+                            type:
+                              description: Type is the identifier type to use for
+                                this resource.
+                              enum:
+                              - uuid
+                              - name
+                              type: string
+                            uuid:
+                              description: uuid is the UUID of the resource in the
+                                PC.
+                              type: string
+                          required:
+                          - type
+                          type: object
+                      required:
+                      - busType
+                      - diskIndex
+                      - diskSize
+                      type: object
+                    type: array
+                  memorySize:
+                    anyOf:
+                    - type: integer
+                    - type: string
+                    description: memorySize is the memory size (in Quantity format)
+                      of the VM The minimum memorySize is 2Gi bytes
+                    pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                    x-kubernetes-int-or-string: true
+                  nics:
+                    description: subnet is to identify the cluster's network subnet
+                      to use for the Machine's VM The cluster identifier (uuid or
+                      name) can be obtained from the Prism Central console or using
+                      the prism_central API. Subnets []NutanixResourceIdentifier `json:"subnet"`
+                    items:
+                      properties:
+                        ipv4Address:
+                          type: string
+                        subnet:
+                          description: NutanixResourceIdentifier holds the identity
+                            of a Nutanix PC resource (cluster, image, subnet, etc.)
+                          properties:
+                            name:
+                              description: name is the resource name in the PC
+                              type: string
+                            type:
+                              description: Type is the identifier type to use for
+                                this resource.
+                              enum:
+                              - uuid
+                              - name
+                              type: string
+                            uuid:
+                              description: uuid is the UUID of the resource in the
+                                PC.
+                              type: string
+                          required:
+                          - type
+                          type: object
+                      required:
+                      - subnet
+                      type: object
+                    minItems: 1
+                    type: array
+                  powerState:
+                    default: "on"
+                    enum:
+                    - "on"
+                    - "off"
+                    type: string
+                  project:
+                    description: Add the machine resources to a Prism Central project
+                    properties:
+                      name:
+                        description: name is the resource name in the PC
+                        type: string
+                      type:
+                        description: Type is the identifier type to use for this resource.
+                        enum:
+                        - uuid
+                        - name
+                        type: string
+                      uuid:
+                        description: uuid is the UUID of the resource in the PC.
+                        type: string
+                    required:
+                    - type
+                    type: object
+                  providerID:
+                    type: string
+                  serialPorts:
+                    items:
+                      properties:
+                        connected:
+                          default: true
+                          type: boolean
+                        index:
+                          minimum: 0
+                          type: integer
+                      required:
+                      - connected
+                      - index
+                      type: object
+                    type: array
+                  vcpuSockets:
+                    description: vcpuSockets is the number of vCPU sockets of the
+                      VM
+                    minimum: 1
+                    type: integer
+                  vcpusPerSocket:
+                    description: vcpusPerSocket is the number of vCPUs per socket
+                      of the VM
+                    minimum: 1
+                    type: integer
+                required:
+                - cluster
+                - memorySize
+                - vcpuSockets
+                - vcpusPerSocket
+                type: object
+            required:
+            - replicas
+            - virtualMachineSpec
+            type: object
+          status:
+            description: NutanixVirtualMachineSetStatus defines the observed state
+              of NutanixVirtualMachineSet
+            properties:
+              activeReplicas:
+                type: integer
+              deletingReplicas:
+                type: integer
+              readyReplicas:
+                type: integer
+              state:
+                description: state of the resource
+                type: string
+            required:
+            - activeReplicas
+            - deletingReplicas
+            - readyReplicas
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      scale:
+        specReplicasPath: .spec.replicas
+        statusReplicasPath: .status.readyReplicas
+      status: {}

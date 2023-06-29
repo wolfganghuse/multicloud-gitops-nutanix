@@ -9,6 +9,7 @@ clusterGroup:
     - golang-external-secrets
     - config-demo
     - hello-world
+    - vm-operator-system
 
   subscriptions:
     acm:
@@ -49,6 +50,12 @@ clusterGroup:
       namespace: golang-external-secrets
       project: hub
       path: common/golang-external-secrets
+
+    vm-operator:
+      name: vm-operator
+      namespace: vm-operator-system
+      project: vm-operator-system
+      path: charts/all/vm-operator
 
     config-demo:
       name: config-demo
