@@ -17,9 +17,9 @@ clusterGroup:
       channel: release-2.7
       #csv: advanced-cluster-management.v2.6.1
     cert-manager:
-      name: cert-manager
+      name: openshift-cert-manager-operator
       namespace: cert-manager-operator
-      channel: stable-1.11
+      channel: stable-v1.11
 
   projects:
     - hub
