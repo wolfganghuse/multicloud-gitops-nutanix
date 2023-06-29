@@ -1,4 +1,4 @@
-vm-operator:
+vmoperator:
   username: admin
   password: nutanix/4u
   pc:

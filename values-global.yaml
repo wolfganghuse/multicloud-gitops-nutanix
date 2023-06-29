@@ -10,7 +10,7 @@ global:
 main:
   clusterGroupName: hub
 
-vm-operator:
+vmoperator:
   pc: crimson-pc.dachlab.net
   user: admin
   password: abcd-notreal
