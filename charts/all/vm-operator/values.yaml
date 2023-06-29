@@ -1,4 +1,9 @@
+secretStore:
+  name: vault-backend
+  kind: ClusterSecretStore
+
+credentialsecret:
+  key: secret/data/nutanix/prismcentral
+  
 vmoperator:
-  username: admin
-  password: nutanix/4u
   pc:

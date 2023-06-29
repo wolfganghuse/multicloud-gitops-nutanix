@@ -12,5 +12,3 @@ main:
 
 vmoperator:
   pc: crimson-pc.dachlab.net
-  user: admin
-  password: abcd-notreal

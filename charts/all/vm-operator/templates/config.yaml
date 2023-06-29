@@ -26,24 +26,4 @@ kind: ConfigMap
 metadata:
   name: nutanix-trustbundle
   namespace: vm-operator-system
----
-apiVersion: v1
-kind: Secret
-type: Opaque
-metadata:
-  name: nutanix-creds
-  namespace: vm-operator-system
-stringData:
-  credentials: |
-    [
-      {
-        "type": "basic_auth", 
-        "data": { 
-          "prismCentral":{
-            "username": "{{ .Values.vmoperator.username }}",
-            "password": "{{ .Values.vmoperator.password }}"
-          },
-          "prismElements": null
-        }
-      }
-    ]
+
