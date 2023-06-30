@@ -4,10 +4,12 @@ clusterGroup:
 
   namespaces:
     - open-cluster-management
+    - cert-manager-operator
     - vault
     - golang-external-secrets
     - config-demo
     - hello-world
+    - vm-operator-system
 
   subscriptions:
     acm:
@@ -15,6 +17,10 @@ clusterGroup:
       namespace: open-cluster-management
       channel: release-2.7
       #csv: advanced-cluster-management.v2.6.1
+    cert-manager:
+      name: openshift-cert-manager-operator
+      namespace: cert-manager-operator
+      channel: stable-v1.11
 
   projects:
     - hub
@@ -44,6 +50,12 @@ clusterGroup:
       namespace: golang-external-secrets
       project: hub
       path: common/golang-external-secrets
+
+    vm-operator:
+      name: vm-operator
+      namespace: vm-operator-system
+      project: hub
+      path: charts/all/vm-operator
 
     config-demo:
       name: config-demo
