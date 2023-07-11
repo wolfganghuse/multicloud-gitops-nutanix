@@ -6,7 +6,9 @@ global:
   multiClusterTarget: all
 
 #enabled: all
-
+vmoperator:
+  pc: crimson-pc.dachlab.net
+  
 clusterGroup:
   name: example
   #insecureUnsealVaultInsideCluster: false
@@ -63,9 +65,6 @@ clusterGroup:
       namespace: application-ci
       project: datacenter
       path: charts/datacenter/pipelines
-
-  vmoperator:
-    pc: crimson-pc.dachlab.net
 
   imperative:
     namespace: imperative
