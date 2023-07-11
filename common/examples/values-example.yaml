@@ -64,6 +64,9 @@ clusterGroup:
       project: datacenter
       path: charts/datacenter/pipelines
 
+  vmoperator:
+    pc: crimson-pc.dachlab.net
+
   imperative:
     namespace: imperative
     # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
