@@ -9,6 +9,3 @@ global:
 
 main:
   clusterGroupName: hub
-
-vmoperator:
-  pc: crimson-pc.dachlab.net
