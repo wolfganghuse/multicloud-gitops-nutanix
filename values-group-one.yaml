@@ -14,7 +14,6 @@ clusterGroup:
     - golang-external-secrets
 
   subscriptions:
-  
 
   projects:
     - eso
