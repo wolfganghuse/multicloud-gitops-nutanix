@@ -6,9 +6,7 @@ global:
   multiClusterTarget: all
 
 #enabled: all
-vmoperator:
-  pc: crimson-pc.dachlab.net
-  
+
 clusterGroup:
   name: example
   #insecureUnsealVaultInsideCluster: false
