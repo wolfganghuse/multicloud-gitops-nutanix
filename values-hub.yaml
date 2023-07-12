@@ -62,6 +62,8 @@ clusterGroup:
       helmOverrides:
       - name: pc
         value: crimson-pc.dachlab.net
+      - name: image
+        value: quay.io/wolfgangntnx/vm-operator:341cb9a
 
     ndb-operator:
       name: ndb-operator
