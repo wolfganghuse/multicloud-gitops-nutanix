@@ -52,13 +52,12 @@ clusterGroup:
       project: hub
       path: common/golang-external-secrets
 
-    vmoperator:
-      name: vmoperator
+    vm-operator:
+      name: vm-operator
       namespace: vm-operator-system
       project: hub
-      chart: chart/vm-operator
-      repoURL: git@github.com:nutanix-cloud-native/vm-operator/tree/dev
-      targetRevision: 0.0.1
+      chart: oci://registry.hub.docker.com/nutanixcloudnative/vm-operator
+      targetRevision: 0.0.2
 
     ndb-operator:
       name: ndb-operator
