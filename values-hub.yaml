@@ -56,7 +56,8 @@ clusterGroup:
       name: vm-operator
       namespace: vm-operator-system
       project: hub
-      path: charts/all/vm-operator
+      path: chart/vm-operator
+      repoURL: github.com/nutanix-cloud-native/vm-operator
 
     ndb-operator:
       name: ndb-operator
