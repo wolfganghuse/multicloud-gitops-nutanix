@@ -1,3 +1,4 @@
-vm-operator:
-  pc: crimson-pc.dachlab.net
-  image: quay.io/wolfgangntnx/vm-operator:341cb9a
+hub:
+  vm-operator:
+    pc: crimson-pc.dachlab.net
+    image: quay.io/wolfgangntnx/vm-operator:341cb9a
