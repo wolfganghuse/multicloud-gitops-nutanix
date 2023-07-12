@@ -56,7 +56,8 @@ clusterGroup:
       name: vm-operator
       namespace: vm-operator-system
       project: hub
-      chart: oci://registry.hub.docker.com/nutanixcloudnative/vm-operator
+      repoURL: oci://registry.hub.docker.com/nutanixcloudnative
+      chart: vm-operator
       targetRevision: 0.0.2
 
     ndb-operator:
