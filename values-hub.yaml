@@ -10,6 +10,7 @@ clusterGroup:
     - config-demo
     - hello-world
     - vm-operator-system
+    - ndb-operator
 
   subscriptions:
     acm:
@@ -56,6 +57,13 @@ clusterGroup:
       namespace: vm-operator-system
       project: hub
       path: charts/all/vm-operator
+
+    ndb-operator:
+      name: ndb-operator
+      namespace: ndb-operator
+      project: hub
+      chart: nutanix/ndb-operator
+      repoURL: https://nutanix.github.io/helm/
 
     config-demo:
       name: config-demo
