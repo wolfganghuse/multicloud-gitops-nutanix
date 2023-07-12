@@ -64,6 +64,7 @@ clusterGroup:
       project: hub
       chart: nutanix/ndb-operator
       repoURL: https://nutanix.github.io/helm/
+      targetRevision: master
 
     config-demo:
       name: config-demo
