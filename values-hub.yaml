@@ -59,7 +59,7 @@ clusterGroup:
       repoURL: registry.hub.docker.com/nutanixcloudnative
       chart: vm-operator
       targetRevision: 0.0.2
-      helmOverrides:
+      overrides:
       - name: pc
         value: crimson-pc.dachlab.net
       - name: image
