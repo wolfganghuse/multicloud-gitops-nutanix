@@ -62,7 +62,7 @@ clusterGroup:
       name: ndb-operator
       namespace: ndb-operator
       project: hub
-      chart: nutanix/ndb-operator
+      chart: ndb-operator
       repoURL: https://nutanix.github.io/helm/
       targetRevision: master
 
