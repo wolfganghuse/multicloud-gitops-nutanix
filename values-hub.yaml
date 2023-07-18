@@ -70,7 +70,7 @@ clusterGroup:
       namespace: nutanix-ztp-operator-system
       project: hub
       repoURL: registry.hub.docker.com/nutanixcloudnative
-      chart: ztp-operator
+      chart: nutanix-ztp-operator
       targetRevision: 0.0.1
       overrides:
       - name: image
