@@ -11,6 +11,7 @@ clusterGroup:
     - hello-world
     - vm-operator-system
     - ndb-operator
+    - nutanix-ztp-operator-system
 
   subscriptions:
     acm:
