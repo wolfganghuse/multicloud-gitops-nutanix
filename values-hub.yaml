@@ -65,6 +65,19 @@ clusterGroup:
       - name: image
         value: quay.io/wolfgangntnx/vm-operator:341cb9a
 
+    vm-operator:
+      name: nutanix-ztp-operator
+      namespace: nutanix-ztp-operator-system
+      project: hub
+      repoURL: registry.hub.docker.com/nutanixcloudnative
+      chart: nutanix-ztp-operator
+      targetRevision: 0.0.1
+      overrides:
+      - name: pc
+        value: crimson-pc.dachlab.net
+      - name: image
+        value: registry.hub.docker.com/nutanixcloudnative/nutanix-ztp-operator:617401a
+
     ndb-operator:
       name: ndb-operator
       namespace: ndb-operator
