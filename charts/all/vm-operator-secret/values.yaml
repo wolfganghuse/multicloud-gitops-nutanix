@@ -4,6 +4,3 @@ secretStore:
 
 credentialsecret:
   key: secret/data/hub/prismcentral
-  
-vmoperator:
-  pc:
