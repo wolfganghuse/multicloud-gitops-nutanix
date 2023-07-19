@@ -64,8 +64,11 @@ clusterGroup:
       - name: pc
         value: crimson-pc.dachlab.net
       - name: image
-        value: quay.io/wolfgangntnx/vm-operator:341cb9a
-
+        value: registry.hub.docker.com/nutanixcloudnative/vm-operator:341cb9a
+      - name: nutanixSecret
+        value: nutanix-creds
+      - name: createNutanixSecret
+        value: false
     nutanix-ztp-operator:
       name: nutanix-ztp-operator
       namespace: nutanix-ztp-operator-system
