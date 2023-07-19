@@ -53,6 +53,11 @@ clusterGroup:
       project: hub
       path: common/golang-external-secrets
 
+    vm-operator-secret:
+      name: vm-operator-secret
+      namespace: vm-operator-system
+      project: hub
+      path: charts/all/vm-operator-secret 
     vm-operator:
       name: vm-operator
       namespace: vm-operator-system
